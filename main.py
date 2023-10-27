@@ -107,7 +107,7 @@ for i in range(6):  # 5 rows of questions + 1 row for categories
 for i in range(5):  # 5 columns
     root.grid_columnconfigure(i, weight=1)
 
-def show_question(question_text, statement, drinks, choices=None, btn=None):  # Added a choices parameter
+def show_question(question_text, statement, drinks, choices=None, btn=None, correct_ans=None):
     player_var = tk.StringVar()
     
     drink_assignment_popup = None  # Declare the variable here at the outer function level
@@ -134,7 +134,7 @@ def show_question(question_text, statement, drinks, choices=None, btn=None):  # 
         drink_assignment_popup = tk.Toplevel(root)
         drink_assignment_popup.title("Assign Drinks")
         
-        lbl_answer = tk.Label(drink_assignment_popup, text=f"Correct Answer: {question['correct']}", font=("Arial", 16))  # Display correct answer
+        lbl_answer = tk.Label(drink_assignment_popup, text=f"Correct Answer: {correct_ans}", font=("Arial", 16))  # Use the correct_ans variable  # Display correct answer
         lbl_answer.pack(pady=20)
 
         lbl = tk.Label(drink_assignment_popup, text=f"Assign {drinks} drinks to:", font=("Arial", 16))
@@ -175,6 +175,6 @@ for col, category in enumerate(questions_data):
         drinks = question['drinks']
         choices = question.get('choices')
         btn = tk.Button(root, text=question_text, padx=10, pady=10)
-        btn["command"] = lambda q=question_text, s=statement, d=drinks, c=choices, b=btn: show_question(q, s, d, c, b)  # Set command after btn is defined
+        btn["command"] = lambda q=question_text, s=statement, d=drinks, c=choices, b=btn, correct_ans=question['correct']: show_question(q, s, d, c, b, correct_ans)  # Set command after btn is defined
         btn.grid(row=row, column=col, sticky="nsew")
 root.mainloop()
