@@ -3,7 +3,52 @@ from PIL import Image, ImageTk
 from tkinter import messagebox
 import os
 
-
+questions_data = {
+    "Wildlife Managment": [
+        {"text": "Full Glass of Water!", "statement": "What is the term used for the maximum number of animals that an environment can support over time?", "choices": ["Brood Capacity", "Carrying Capacity", "Edge Capacity"],"correct": "Carrying Capacity", "drinks": 0},
+        {"text": "Big Drink!", "statement": "Name one tool used in wildlife management for tracking animals.", "correct" : "Tracking Collars", "drinks": .5},
+        {"text": "Chug it!", "statement": "What is the term for the minimum viable population size below which a species is likely to go extinct?", "choices": ["MVP", "FPT", "LQA", "APM"], "correct": "MVP (Minimum Viable Population)", "drinks": 1},
+        {"text": "Shot with a chaser!", "statement": "What is the practice of deliberately moving a species to a new location called?", "choices": ["Translocation", "Transposition", "Transference", "Transmutation"], "correct": "Translocation", "drinks": 2},
+        {"text": "Shot no chaser!", "statement": "What is the primary objective of the 'Rewilding' approach in conservation?", "correct": "To restore and protect natural processes and core wilderness areas.","drinks": 2.5},
+        {"text": "Two Shots!", "statement": "Name the phenomenon where fragmented habitats can lead to species being trapped in small areas, leading to reduced gene flow and increased vulnerability.", "correct": "Island Biogeography Theory", "drinks": 3},
+        {"text": "Mysterious!", "statement": "Is this a banana?", "drinks": 1} #TODO: ADD MINI GAME
+    ],
+    "Aviation!": [
+        {"text": "Full Glass of Water!", "statement": "What is the primary responsibility of a private pilot?", "correct": "To act as pilot-in-command of an aircraft", "drinks": 0},
+        {"text": "Big Drink!", "statement": "In which part of the airplane would you find the empennage?", "choices": ["The tail section.", "The wingtip.", "The fuselage.", "The nose cone."], "correct": "The tail section.", "drinks": .5},
+        {"text": "Chug it!", "statement": "In aviation management, what is the primary role of an FBO?", "correct": "Fixed-Base Operator; they offer services such as fueling, hangaring, tie-down and parking, aircraft rental, and maintenance.", "drinks": 2},
+        {"text": "Shot no chaser!", "statement": "For instrument rating, what is the significance of 'Decision Altitude' or 'Decision Height'?", "correct": " It's the altitude or height at which a decision must be made during an instrument approach to either continue the landing or execute a missed approach.", "drinks": 2.5},
+        {"text": "Two Shots!", "statement": " In aviation management, which principle is essential for ensuring efficient runway operations at busy airports?","choices": ["Queue scheduling or time queue distribution.", "Slot management or time slot allocation.", "Time block organization.", "Interval coordination or time period assignment."], "correct": "Slot management or time slot allocation.", "drinks": 3},
+        {"text": "Mysterious!", "statement": "Is this a banana?", "drinks": 1}
+    ],
+    "Micro Biology!": [
+        {"text": "Full Glass of Water!", "statement": "What is microbiology?", "correct": "The study of microorganisms, including bacteria, viruses, fungi, and protozoa.", "drinks": 0},
+        {"text": "Big Drink!", "statement": "What is the shape of a bacillus bacterium?", "choices": ["Rod-shaped.", "Cone-shaped.", "Spiral-shaped.", "Disk-shaped."], "correct": "Rod-shaped.", "drinks": .5},
+        {"text": "Chug it!", "statement": "Which process allows bacteria to exchange genetic material through a pilus?", "choices": ["Configuration.", "Conjunction.", "Conflation.","Conjugation."], "correct": "Conjugation.", "drinks": 1},
+        {"text": "Shot with a chaser!", "statement": "Which domain of microorganisms is known for thriving in extreme environments like hot springs or acidic lakes?", "choices": ["Bacteria.", "Eukarya.", "Archaea.", "Protozoa."], "correct": "Archaea.", "drinks": 2},
+        {"text": "Shot no chaser!", "statement": "Which molecule, found in the cell walls of bacteria, can induce a strong immune response in animals?", "choices": ["Lipopolysaccharide (LPS).", "Lipoglycoprotein (LGP).", "Lipoproteinase (LPA).", "Glycolipoprotein (GLP)."], "correct": "Lipopolysaccharide (LPS).", "drinks": 2.5},
+        {"text": "Two Shots!", "statement": " What is the significance of the 'RNA world' hypothesis in the context of the origin of life?", "correct": "It proposes that self-replicating ribonucleic acid (RNA) molecules were precursors to current life (which is based on deoxyribonucleic acid, DNA).", "drinks": 3},
+        {"text": "Mysterious!", "statement": "Is this a banana?", "drinks": 1}
+    ],
+    "3D Modeling!": [
+        {"text": "Full Glass of Water!", "statement": " What does 'RGB' stand for in digital media arts?", "correct": "Red, Green, Blue - the primary colors of light in digital displays." , "drinks": 0},
+        {"text": "Big Drink!", "statement": "Which software is commonly used for graphic design and photo editing?", "correct": "Adobe Photoshop." , "drinks": .5},
+        {"text": "Chug it!", "statement": "In the context of website design, what does 'UX' stand for?", "correct": "User Experience" , "drinks": 1},
+        {"text": "Shot with a chaser!", "statement": "In digital marketing, what is the primary purpose of SEO?", "correct": "Search Engine Optimization; to improve the visibility of a website or web page on search engine results." , "drinks": 2},
+        {"text": "Shot no chaser!", "statement": "In digital storytelling, what is the concept of 'transmedia storytelling'?", "correct": "Telling a story across multiple platforms and formats using digital technologies." , "drinks": 2.5},
+        {"text": "Two Shots!", "statement": "What is the significance of 'vector graphics' in digital design?", "correct": " Vector graphics are based on mathematical paths and can be scaled without losing quality." , "drinks": 3},
+        {"text": "Mysterious!", "statement": "Is this a banana?", "drinks": 1}
+    ],
+    "Communications (Very special Digital Arts)!": [
+        {"text": "Full Glass of Water!", "statement": "What is 3D modeling?", "correct": "The process of creating a three-dimensional representation of any object or surface using specialized software.", "drinks": 0},
+        {"text": "Big Drink!", "statement": "Which tool in 3D modeling software allows you to stretch, compress, or twist a model?", "correct": "The 'scale' tool.", "drinks": .5},
+        {"text": "Chug it!", "statement": "What is the primary purpose of 'rigging' in 3D modeling?", "correct": "To create a skeletal structure that can be used to animate and pose a model.", "drinks": 1},
+        {"text": "Shot with a chaser!", "statement": "What technique involves creating a high-resolution model, then deriving a lower-resolution version to use in real-time applications?",  "choices": ["Mesh retopology.", "Mesh deformation.", "Mesh subdivision.", "Mesh refactoring."], "correct": "Mesh retopology.", "drinks": 2},
+        {"text": "Shot no chaser!", "statement": "How do 'NURBS' differ from polygon-based modeling?", "correct": "NURBS (Non-Uniform Rational B-Splines) are mathematical representations that produce smooth surfaces, while polygons are flat surfaces defined by vertices.", "drinks": 2.5},
+        {"text": "Two Shots!", "statement": "What does the 'Subdivision Surface' technique achieve in 3D modeling?", "correct": "It refines and smoothens the surface of a model by subdividing each polygonal face into smaller faces, resulting in a smoother appearance.", "drinks": 3},
+        {"text": "Mysterious!", "statement": "Is this a banana?", "drinks": 1}
+    ]
+}
 
 class Player:
     def load_image(self, path):
@@ -22,11 +67,18 @@ class Player:
 
     def drink(self):
         self.drink_count += 1
-        if self.drink_count > 5:
+        if self.drink_count >= 10:
+            self.avatar_image = self.load_image(self.avatar_paths[3])
+        elif self.drink_count >= 7:
             self.avatar_image = self.load_image(self.avatar_paths[2])
-        elif self.drink_count > 3:
+        elif self.drink_count > 2:
             self.avatar_image = self.load_image(self.avatar_paths[1])
+        else:  
+            self.avatar_image = self.load_image(self.avatar_paths[0])
+        # Moved this line out of the nested condition
         self.label.configure(image=self.avatar_image)
+        root.update()  # Force GUI to update
+        print(self.drink_count)
 root = tk.Tk()
 root.title("Drinking Game")
 
@@ -61,70 +113,39 @@ for i in range(6):  # 5 rows of questions + 1 row for categories
 for i in range(5):  # 5 columns
     root.grid_columnconfigure(i, weight=1)
 
-questions_data = {
-    "Wildlife Managment": [
-        {"text": "Water!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "A drink!", "statement": "Is this an apple?", "drinks": 2},
-        {"text": "Chug it!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "A shot!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "Mysterious!", "statement": "Is this a banana?", "drinks": 2}
-    ],
-    "Aviation!": [
-        {"text": "Water!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "A drink!", "statement": "Is this an apple?", "drinks": 2},
-        {"text": "Chug it!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "A shot!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "Mysterious!", "statement": "Is this a banana?", "drinks": 2}
-    ],
-    "Micro Biology!": [
-        {"text": "Water!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "A drink!", "statement": "Is this an apple?", "drinks": 2},
-        {"text": "Chug it!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "A shot!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "Mysterious!", "statement": "Is this a banana?", "drinks": 2}
-    ],
-    "3D Modeling!": [
-        {"text": "Water!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "A drink!", "statement": "Is this an apple?", "drinks": 2},
-        {"text": "Chug it!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "A shot!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "Mysterious!", "statement": "Is this a banana?", "drinks": 2}
-    ],
-    "Communications (Very special Digital Arts)!": [
-        {"text": "Water!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "A drink!", "statement": "Is this an apple?", "drinks": 2},
-        {"text": "Chug it!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "A shot!", "statement": "Is this a banana?", "drinks": 2},
-        {"text": "Mysterious!", "statement": "Is this a banana?", "drinks": 2}
-    ]
-}
-
 def show_question(question_text, statement, drinks):
+    player_var = tk.StringVar()
+    
+    drink_assignment_popup = None  # Declare the variable here at the outer function level
+    popup = tk.Toplevel(root)     # Declare the popup here so it's accessible in inner functions
+
     def assign_drinks_to_player():
+        nonlocal drink_assignment_popup  # Use the nonlocal keyword to refer to the outer variable
         player_name = player_var.get()
         for player in players:
             if player.name == player_name:
                 for _ in range(drinks):  # Call the drink method based on the number of drinks
                     player.drink()
-                popup.destroy()
+                if drink_assignment_popup:  # Check if the popup is initialized
+                    drink_assignment_popup.destroy()  # Close the drink assignment popup window
+                popup.destroy()  # Close the original question popup window
+                break
 
     def accept_challenge():
-        popup.destroy()
+        nonlocal drink_assignment_popup  # Use the nonlocal keyword to refer to the outer variable
+        popup.withdraw()  # Hide the popup but don't destroy it
         drink_assignment_popup = tk.Toplevel(root)
         drink_assignment_popup.title("Assign Drinks")
 
         lbl = tk.Label(drink_assignment_popup, text=f"Assign {drinks} drinks to:", font=("Arial", 16))
         lbl.pack(pady=20)
 
-        player_var = tk.StringVar(drink_assignment_popup)
         player_dropdown = tk.OptionMenu(drink_assignment_popup, player_var, *[player.name for player in players])
         player_dropdown.pack(pady=20)
 
         assign_btn = tk.Button(drink_assignment_popup, text="Assign", command=assign_drinks_to_player)
         assign_btn.pack(pady=20)
 
-    
-    popup = tk.Toplevel(root)
     popup.attributes('-fullscreen', True)
     lbl_question = tk.Label(popup, text=statement, font=("Arial", 24))
     lbl_question.pack(pady=200)
@@ -136,7 +157,7 @@ def show_question(question_text, statement, drinks):
     # Close question popup button (if you want one)
     btn_close = tk.Button(popup, text="Close", command=popup.destroy, padx=20, pady=20)
     btn_close.pack(pady=50)
-    
+ 
 
 
 for col, category in enumerate(questions_data):
