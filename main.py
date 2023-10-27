@@ -22,7 +22,7 @@ questions_data = {
         {"text": "Big Drink!", "statement": "What is the shape of a bacillus bacterium?", "choices": ["Rod-shaped.", "Cone-shaped.", "Spiral-shaped.", "Disk-shaped."], "correct": "Rod-shaped.", "drinks": 1},
         {"text": "Chug it!", "statement": "Which process allows bacteria to exchange genetic material through a pilus?", "choices": ["Configuration.", "Conjunction.", "Conflation.","Conjugation."], "correct": "Conjugation.", "drinks": 1},
         {"text": "Shot with a chaser!", "statement": "Which domain of microorganisms is known for thriving in extreme environments like hot springs or acidic lakes?", "choices": ["Bacteria.", "Eukarya.", "Archaea.", "Protozoa."], "correct": "Archaea.", "drinks": 2},
-        {"text": "Shot no chaser!", "statement": "Which molecule, found in the cell walls of bacteria, can induce a strong immune response in animals?", "choices": ["Lipopolysaccharide (LPS).", "Lipoglycoprotein (LGP).", "Lipoproteinase (LPA).", "Glycolipoprotein (GLP)."], "correct": "Lipopolysaccharide (LPS).", "drinks": 2.5},
+        {"text": "Shot no chaser!", "statement": "Which molecule, found in the cell walls of bacteria, can induce a strong immune response in animals?", "choices": ["Lipopolysaccharide (LPS).", "Lipoglycoprotein (LGP).", "Lipoproteinase (LPA).", "Glycolipoprotein (GLP)."], "correct": "Lipopolysaccharide (LPS).", "drinks": 2},
         {"text": "Two Shots!", "statement": " What is the significance of the 'RNA world' hypothesis in the context of the origin of life?", "correct": "It proposes that self-replicating ribonucleic acid (RNA) molecules were precursors to current life (which is based on deoxyribonucleic acid, DNA).", "drinks": 3},
     ],
     "3D Modeling!": [
