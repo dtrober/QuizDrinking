@@ -44,7 +44,7 @@ questions_data = {
 class Player:
     def load_image(self, path):
         """Load and resize the image."""
-        base_size = (200, 200)  # Adjust this value as per your requirement
+        base_size = (200, 200)  
         img = Image.open(path)
         img = img.resize(base_size, Image.LANCZOS)  # Use antialiasing for smoother resize
         return ImageTk.PhotoImage(img)
@@ -66,12 +66,19 @@ class Player:
             self.avatar_image = self.load_image(self.avatar_paths[1])
         else:  
             self.avatar_image = self.load_image(self.avatar_paths[0])
-        # Moved this line out of the nested condition
         self.label.configure(image=self.avatar_image)
         root.update()  # Force GUI to update
         print(self.drink_count)
 root = tk.Tk()
 root.title("Drinking Game")
+
+# Dark Mode Colors
+dark_bg = "#2D2D2D"
+dark_fg = "#EAEAEA"
+dark_blue = "#0052CC"
+dark_button = "#4A4A4A"
+
+root.configure(bg=dark_bg)
 
 # Each player's avatars
 tex_avatars = [os.path.join("Avatars", f"Tex{i}.png") for i in range(1, 5)]
@@ -81,7 +88,6 @@ lup_avatars = [os.path.join("Avatars", f"Lup{i}.png") for i in range(1, 5)]
 toes_avatars = [os.path.join("Avatars", f"Toes{i}.png") for i in range(1, 5)]
 avatars_paths_for_player = [
     [os.path.join("Avatars", "tex1.png"), os.path.join("Avatars", "tex2.png"), os.path.join("Avatars", "tex3.png")],
-    # ... add more lists for other players if they have different avatars
 ]
 
 # Load your players (You can add more players and their respective avatar images)
@@ -91,12 +97,11 @@ players = [
     Player("Sneeze", sneeze_avatars),
     Player("Lup", lup_avatars),
     Player("Toes", toes_avatars)
-    # ... Add more players as needed
 ]
 
 # Display players' avatars at the bottom of the screen
 for index, player in enumerate(players):
-    player.label = tk.Label(root, image=player.avatar_image, text=player.name, compound="top")
+    player.label = tk.Label(root, image=player.avatar_image, text=player.name, compound="top", bg=dark_bg, fg=dark_fg)
     player.label.grid(row=6, column=index, sticky="nsew")
     root.grid_columnconfigure(index, weight=1)
 
@@ -129,7 +134,7 @@ def show_question(question_text, statement, drinks, choices=None, btn=None, corr
         
 
     def accept_challenge():
-        nonlocal drink_assignment_popup  # Use the nonlocal keyword to refer to the outer variable
+        nonlocal drink_assignment_popup  
         popup.withdraw()  # Hide the popup but don't destroy it
         drink_assignment_popup = tk.Toplevel(root)
         drink_assignment_popup.title("Assign Drinks")
@@ -147,17 +152,19 @@ def show_question(question_text, statement, drinks, choices=None, btn=None, corr
         assign_btn.pack(pady=20)
 
     popup.attributes('-fullscreen', True)
+    popup.configure(bg=dark_bg)
     lbl_question = tk.Label(popup, text=statement, font=("Arial", 24))
+    lbl_question.configure(bg=dark_bg, fg=dark_fg)
     lbl_question.pack(pady=200)
     
     # Display choices if they exist
     if choices:
         for choice in choices:
-            choice_label = tk.Label(popup, text=choice, font=("Arial", 18))
+            choice_label = tk.Label(popup, text=choice, font=("Arial", 18), bg=dark_bg, fg=dark_fg)
             choice_label.pack(pady=10)
     
     # Button to confirm the answer and assign drinks
-    btn_accept = tk.Button(popup, text="Accept Challenge", command=accept_challenge, padx=20, pady=20)
+    btn_accept = tk.Button(popup, text="Questioned Answered", command=accept_challenge, padx=20, pady=20)
     btn_accept.pack(pady=50)
 
     # Close question popup button (if you want one)
@@ -165,8 +172,9 @@ def show_question(question_text, statement, drinks, choices=None, btn=None, corr
     btn_close.pack(pady=50)
 
 
+# Create the category labels in dark mode
 for col, category in enumerate(questions_data):
-    label = tk.Label(root, text=category, bg="blue", fg="white", padx=10, pady=10)
+    label = tk.Label(root, text=category, bg=dark_blue, fg=dark_fg, padx=10, pady=10)
     label.grid(row=0, column=col, sticky="nsew")
 
     for row, question in enumerate(questions_data[category], start=1):
@@ -174,7 +182,8 @@ for col, category in enumerate(questions_data):
         statement = question['statement']
         drinks = question['drinks']
         choices = question.get('choices')
-        btn = tk.Button(root, text=question_text, padx=10, pady=10)
+        btn = tk.Button(root, text=question_text, bg=dark_button, fg=dark_fg, padx=10, pady=10)
         btn["command"] = lambda q=question_text, s=statement, d=drinks, c=choices, b=btn, correct_ans=question['correct']: show_question(q, s, d, c, b, correct_ans)  # Set command after btn is defined
         btn.grid(row=row, column=col, sticky="nsew")
+
 root.mainloop()
